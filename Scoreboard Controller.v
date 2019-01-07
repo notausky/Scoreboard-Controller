@@ -4,7 +4,7 @@ module ScoreboardController(clk, CLK, St, Pt, Done, seg7_points_2, seg7_points_1
   input   CLK;
   input   St;
   input   Pt;  
-  output  reg Done;
+  output reg Done;
   output  seg7_points_2;
   output  seg7_points_1;
   output  seg7_points_0;
@@ -68,37 +68,39 @@ module ScoreboardController(clk, CLK, St, Pt, Done, seg7_points_2, seg7_points_1
     Final = 1'b0;
   end
 
-  always @(posedge Add2, Add3) begin 
+  always @(posedge Add2, Add3) begin         //pts
     if (Add2 == 1'b1) begin
       if (BCD_points_0 < 4'b1000) begin
         BCD_points_0 <= BCD_points_0 + 2;
       end
-      else if (BCD_points_1 < 4'b1001) begin 
+      else if (BCD_points_1 < 4'b1001) begin //10+
         BCD_points_1 <= BCD_points_1 + 1;
         BCD_points_0 <= BCD_points_0 - 8;
       end
-      else if(BCD_points_2 < 4'b1001) begin 
+      else if(BCD_points_2 < 4'b1001) begin //100+
         BCD_points_2 <= BCD_points_2 + 1;
         BCD_points_1 <= BCD_points_1 - 9;
         BCD_points_0 <= BCD_points_0 - 8;
       end
-      
+      //else begin   //>999 
       Add2 <= 1'b0;   
     end
     else begin  
       if (BCD_points_0 < 4'b0111) begin
         BCD_points_0 <= BCD_points_0 + 3;
       end
-      else if (BCD_points_1 < 4'b1001) begin
+      else if (BCD_points_1 < 4'b1001) begin // 10+
         BCD_points_1 <= BCD_points_1 + 1;
         BCD_points_0 <= BCD_points_0 - 7;
       end
-      else if(BCD_points_2 < 4'b1001) begin
+      else if(BCD_points_2 < 4'b1001) begin // 100+ 
         BCD_points_2 <= BCD_points_2 + 1;
         BCD_points_1 <= 0;
         BCD_points_0 <= BCD_points_0 - 7;
       end
-      
+      //else begin   //>999
+          //
+      //end
      Add3 <= 1'b1;
     end 
   end
@@ -125,14 +127,14 @@ module ScoreboardController(clk, CLK, St, Pt, Done, seg7_points_2, seg7_points_1
 
   
   
-  always @(posedge clk) begin 
+  always @(posedge clk) begin // set 1s
     if(Ent == 1'b1) begin
       if(BCD_timer_1 == 4'b0000 && BCD_timer_0 == 4'b0000) begin
         Tup <= 1'b1;
         Ent <= 1'b0;
-        if(BCD_points_2 * 100 + BCD_points_1 * 10 + BCD_points_0  >= BCD_level * 100 - 50) begin 
+        if(BCD_points_2 * 100 + BCD_points_1 * 10 + BCD_points_0  >= BCD_level * 100 - 50) begin  //??
           Pass <= 1'b1;
-          if(BCD_level == 2) begin
+          if(BCD_level == 2) begin  //final level
             Final <= 1'b1;
           end
         end
@@ -237,7 +239,7 @@ module ScoreboardController(clk, CLK, St, Pt, Done, seg7_points_2, seg7_points_1
   assign seg7_points_0 = seg7Rom[BCD_points_0];
   assign seg7_timer_1 = seg7Rom[BCD_timer_1];
   assign seg7_timer_0 = seg7Rom[BCD_timer_0];
-  assign seg7_level_0 = seg7Rom[BCD_level];
+  assign seg7_level = seg7Rom[BCD_level];
 
 
 endmodule
