@@ -81,6 +81,7 @@ module t_ScoreboardController();
                #20 Pt = 1; #5 Pt = 0;
                #20 Pt = 1; #5 Pt = 0;
                #20 Pt = 1; #5 Pt = 0;
+               #20 Pt = 1; #5 Pt = 0;
 
 
         
