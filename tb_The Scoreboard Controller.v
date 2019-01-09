@@ -16,7 +16,7 @@ module t_ScoreboardController();
 
        initial begin
                St = 1;
-               #60 Pt = 1; #5 Pt = 0;
+               #60 Pt = 1; #5 Pt = 0; St = 0;
                #20 Pt = 1; #5 Pt = 0;
                #20 Pt = 1; #5 Pt = 0;
                #20 Pt = 1; #5 Pt = 0;
@@ -44,12 +44,43 @@ module t_ScoreboardController();
                #20 Pt = 1; #5 Pt = 0;
                #20 Pt = 1; #5 Pt = 0;
                #20 Pt = 1; #5 Pt = 0; 
-               #20 Pt = 1; #5 Pt = 0;
+               
 
-               #40 Pt = 1; #5 Pt = 0;
+               #40 Pt = 1; #5 Pt = 0; // R2
                #20 Pt = 1; #5 Pt = 0;
                #20 Pt = 1; #5 Pt = 0; 
-               #20 Pt = 1; #5 Pt = 0;               
+               #20 Pt = 1; #5 Pt = 0;
+
+               #20 Pt = 1; #5 Pt = 0;
+               #20 Pt = 1; #5 Pt = 0;
+               #20 Pt = 1; #5 Pt = 0;
+               #20 Pt = 1; #5 Pt = 0;
+    
+               #20 Pt = 1; #5 Pt = 0;
+               #20 Pt = 1; #5 Pt = 0;
+               #20 Pt = 1; #5 Pt = 0;
+               #20 Pt = 1; #5 Pt = 0;
+ 
+               #20 Pt = 1; #5 Pt = 0;
+               #20 Pt = 1; #5 Pt = 0;
+               #20 Pt = 1; #5 Pt = 0;
+               #20 Pt = 1; #5 Pt = 0; 
+
+               #20 Pt = 1; #5 Pt = 0;
+               #20 Pt = 1; #5 Pt = 0;
+               #20 Pt = 1; #5 Pt = 0;
+               #20 Pt = 1; #5 Pt = 0;  
+
+               #20 Pt = 1; #5 Pt = 0;
+               #20 Pt = 1; #5 Pt = 0;
+               #20 Pt = 1; #5 Pt = 0;
+               #20 Pt = 1; #5 Pt = 0;          
+
+               #200 St = 1;
+               #20 Pt = 1; #5 Pt = 0; St = 0;
+               #20 Pt = 1; #5 Pt = 0;
+               #20 Pt = 1; #5 Pt = 0;
+               #20 Pt = 1; #5 Pt = 0;
 
 
         

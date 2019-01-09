@@ -1,5 +1,6 @@
 module ScoreboardController(clk, St, Pt, Done, seg7_points_2, seg7_points_1, seg7_points_0, seg7_timer_1, seg7_timer_0, seg7_level); 
 
+  parameter Threshold_1 = 40;
   input   clk; 
   input   St;
   input   Pt;  
@@ -18,7 +19,6 @@ module ScoreboardController(clk, St, Pt, Done, seg7_points_2, seg7_points_1, seg
   reg [3:0]  BCD_timer_0;   //1
   reg [3:0]  BCD_level;
   reg [6:0]  seg7Rom [0:9];
- 
   reg [2:0]  State;
   reg [2:0]  Nextstate;
   reg ClrS;
@@ -79,8 +79,7 @@ module ScoreboardController(clk, St, Pt, Done, seg7_points_2, seg7_points_1, seg
         BCD_points_2 <= BCD_points_2 + 1;
         BCD_points_1 <= BCD_points_1 - 9;
         BCD_points_0 <= BCD_points_0 - 8;
-      end
-      //else begin   //>999 
+      end 
       Add2 <= 1'b0;   
     end
     else if (Add3 == 1'b1)begin  
@@ -96,9 +95,6 @@ module ScoreboardController(clk, St, Pt, Done, seg7_points_2, seg7_points_1, seg
         BCD_points_1 <= 0;
         BCD_points_0 <= BCD_points_0 - 7;
       end
-      //else begin   //>999
-          //
-      //end
      Add3 <= 1'b0;
     end 
   end
@@ -131,14 +127,16 @@ module ScoreboardController(clk, St, Pt, Done, seg7_points_2, seg7_points_1, seg
   always @(posedge clk) begin // set 1s
     if(Ent == 1'b1) begin
       if(BCD_timer_1 == 4'b0000 && BCD_timer_0 == 4'b0000) begin
-        Tup <= 1'b1;
         Ent <= 1'b0;
-        if(BCD_points_2 * 100 + BCD_points_1 * 10 + BCD_points_0  >= BCD_level * 20) begin  //??
-          Pass <= 1'b1;
-          if(BCD_level == 2) begin  //final level
+        if(BCD_level == 2) begin  //final level
             Final <= 1'b1;
+        end
+        else begin
+          if(BCD_points_2 * 100 + BCD_points_1 * 10 + BCD_points_0  >=  Threshold_1) begin  //pass?
+            Pass <= 1'b1;
           end
         end
+        Tup <= 1'b1;
       end
       else if(BCD_timer_0 == 4'b0000) begin
         BCD_timer_0 <= 4'b1001;
@@ -148,7 +146,7 @@ module ScoreboardController(clk, St, Pt, Done, seg7_points_2, seg7_points_1, seg
         BCD_timer_0 <= BCD_timer_0 - 1;
       end
     end
-    if(BCD_timer_1 == 4'b0001 && BCD_timer_0 == 4'b0101) begin
+    if(BCD_timer_1 == 4'b0001 && BCD_timer_0 == 4'b0101 ) begin
       Tthree <= 1'b1;
     end
   end
@@ -180,16 +178,16 @@ module ScoreboardController(clk, St, Pt, Done, seg7_points_2, seg7_points_1, seg
           ClrL <= 1'b0;
           Ldt <= 1'b0; 
           if (Tup == 1'b1) begin
-            if (Pass == 1'b1) begin
-              if (Final == 1'b1) begin
-                Nextstate <= 7;
-              end
-              else begin
-                Nextstate <= 5;
-              end
+            if (Final == 1'b1) begin
+              Nextstate <= 7;
             end
             else begin
-              Nextstate <= 7;
+              if (Pass == 1'b1) begin
+                Nextstate <= 5;
+              end
+              else begin
+                Nextstate <= 7;
+              end
             end
           end
           else begin
